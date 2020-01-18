@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,7 +38,8 @@ public class Robot extends TimedRobot {
   TalonSRX intakeLeftWheel;
   Compressor compresser;
 
-  DoubleSolenoid solenoid;
+  DoubleSolenoid solenoidLeft;
+  DoubleSolenoid solenoidRight;
 
   Timer timer;
 
@@ -62,7 +64,10 @@ public class Robot extends TimedRobot {
     intakeRightWheel = new TalonSRX(17);
     intakeRightWheel.follow(intakeLeftWheel);
     compresser = new Compressor();
-    timer = new Timer();
+
+    solenoidLeft = new DoubleSolenoid(0, 7);
+    solenoidRight = new DoubleSolenoid(2, 5);
+
   }
 
   /**
@@ -82,17 +87,20 @@ public class Robot extends TimedRobot {
 
     if(retractButton.get())
    {
-    solenoid.set(DoubleSolenoid.Value.kForward);
-    timer.start();
+    if(solenoidLeft.get() == DoubleSolenoid.Value.kForward && solenoidRight.get() == DoubleSolenoid.Value.kForward){
+      solenoidLeft.set(DoubleSolenoid.Value.kReverse);
+      solenoidRight.set(DoubleSolenoid.Value.kReverse);
+    }
+    else{
+    solenoidLeft.set(DoubleSolenoid.Value.kForward);
+    solenoidRight.set(DoubleSolenoid.Value.kForward);
+    }
+
     }  
 
-    if(timer.get() >= 3000){
-      solenoid.set(DoubleSolenoid.Value.kReverse);
-      timer.stop();
-      timer.reset();
-    }
+    
     if(intakeWheelTrigger.get()){
-      if(solenoid.get() == DoubleSolenoid.Value.kForward){
+      if(solenoidLeft.get() == DoubleSolenoid.Value.kForward && solenoidRight.get() == DoubleSolenoid.Value.kForward){
         if(intakeLeftWheel.getMotorOutputPercent() != 0 && intakeRightWheel.getMotorOutputPercent() != 0){
           intakeLeftWheel.set(ControlMode.PercentOutput, 0.2);
           intakeRightWheel.set(ControlMode.PercentOutput, -0.2);
