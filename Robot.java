@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
   JoystickButton retractButton;
   JoystickButton intakeWheelTrigger;
   TalonSRX intakeRightWheel;
+  TalonSRX intakeLeftWheel;
 
   DoubleSolenoid solenoid;
 
@@ -52,6 +55,10 @@ public class Robot extends TimedRobot {
     joystick = new Joystick(1);
     retractButton = new JoystickButton(joystick, 1);
     intakeWheelTrigger = new JoystickButton(joystick, 2);
+    intakeWheelTrigger = new JoystickButton(joystick, 2);
+    intakeLeftWheel = new TalonSRX(16);
+    intakeRightWheel = new TalonSRX(17);
+    intakeRightWheel.follow(intakeLeftWheel);
     timer = new Timer();
   }
 
@@ -80,6 +87,20 @@ public class Robot extends TimedRobot {
       solenoid.set(DoubleSolenoid.Value.kReverse);
       timer.stop();
       timer.reset();
+    }
+    if(intakeWheelTrigger.get()){
+      if(solenoid.get() == DoubleSolenoid.Value.kForward){
+        if(intakeLeftWheel.getMotorOutputPercent() != 0 && intakeRightWheel.getMotorOutputPercent() != 0){
+          intakeLeftWheel.set(ControlMode.PercentOutput, 0.2);
+          intakeRightWheel.set(ControlMode.PercentOutput, -0.2);
+        }
+        else{
+          intakeLeftWheel.set(ControlMode.PercentOutput, 0);
+          intakeRightWheel.set(ControlMode.PercentOutput, 0);
+          
+        }
+
+      }
     }
     
 }
