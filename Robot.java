@@ -60,8 +60,8 @@ public class Robot extends TimedRobot {
     retractButton = new JoystickButton(joystick, 1);
     intakeWheelTrigger = new JoystickButton(joystick, 2);
     intakeWheelTrigger = new JoystickButton(joystick, 2);
-    intakeLeftWheel = new TalonSRX(16);
-    intakeRightWheel = new TalonSRX(17);
+    intakeLeftWheel = new TalonSRX(11);
+    intakeRightWheel = new TalonSRX(6);
     intakeRightWheel.follow(intakeLeftWheel);
     compresser = new Compressor();
 
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     if(solenoidLeft.get() == DoubleSolenoid.Value.kForward && solenoidRight.get() == DoubleSolenoid.Value.kForward){
       solenoidLeft.set(DoubleSolenoid.Value.kReverse);
       solenoidRight.set(DoubleSolenoid.Value.kReverse);
-    }
+    }.
     else{
     solenoidLeft.set(DoubleSolenoid.Value.kForward);
     solenoidRight.set(DoubleSolenoid.Value.kForward);
