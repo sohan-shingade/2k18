@@ -10,6 +10,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   JoystickButton intakeWheelTrigger;
   TalonSRX intakeRightWheel;
   TalonSRX intakeLeftWheel;
+  Compressor compresser;
 
   DoubleSolenoid solenoid;
 
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
     intakeLeftWheel = new TalonSRX(16);
     intakeRightWheel = new TalonSRX(17);
     intakeRightWheel.follow(intakeLeftWheel);
+    compresser = new Compressor();
     timer = new Timer();
   }
 
